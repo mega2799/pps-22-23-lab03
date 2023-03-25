@@ -43,6 +43,7 @@ object Streams extends App :
       case (Cons(head, tail), n) if n > 0 => drop(tail())(n - 1)
       case (Cons(head, tail), n)  => cons(head(), tail())
       case _ => Empty()
+
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
 
@@ -50,16 +51,16 @@ object Streams extends App :
       case _ => Stream.cons(k, constante(k))
 
 
-    def fibs : Stream[Int] =
-      val fib = Stream.cons(1, Stream.cons(0, Empty()))
+    def fibs: Stream[Int] =
+      val fib = Stream.cons(0, Stream.cons(1, Empty()))
       fib match
-        case (Cons(head, tail)) => Stream.cons(head + take(tail())(1), tail()) 
-      
-      // Stream.map(Stream.take(Stream.iterate(0)(_ + 1))(2))(_ * 2)
+//        case (Cons(head, tail)) => Stream.cons(head(), Stream.map(tail())((t) => t + head()))
+        case (Cons(head, tail)) => Stream.cons(head(), Stream.map(tail())((t) => t + head()))
 
+      // Stream.map(Stream.take(Stream.iterate(0)(_ + 1))(2))(_ * 2)
   end Stream
 
-    Stream . toList ( Stream . take ( fibs ) (8) )
+    println(Stream . toList ( Stream . take ( fibs ) (8) ))
 
 //    println(Stream.toList(Stream.take(constante("x"))(5)))
 // var simplifies chaining of functions a bit..
