@@ -1,6 +1,9 @@
 package u03
 
-import u03.Streams.Stream.{constante}
+import math.Fractional.Implicits.infixFractionalOps
+  import math.Integral.Implicits.infixIntegralOps
+  import math.Numeric.Implicits.infixNumericOps
+import u03.Streams.Stream.{constante, fibs}
 
 object Streams extends App :
 
@@ -47,13 +50,16 @@ object Streams extends App :
       case _ => Stream.cons(k, constante(k))
 
 
-    // def fibs[Int]: Stream[Int] =
-    //   val bruh = Stream.iterate(0)(_ + 1)(1)
-    //   Stream.take(fibs(1), fibs(3))
+    def fibs : Stream[Int] =
+      val fib = Stream.cons(1, Stream.cons(0, Empty()))
+      fib match
+        case (Cons(head, tail)) => Stream.cons(head + take(tail())(1), tail()) 
+      
+      // Stream.map(Stream.take(Stream.iterate(0)(_ + 1))(2))(_ * 2)
 
   end Stream
 
-    // Stream . toList ( Stream . take ( fibs ) (8) )
+    Stream . toList ( Stream . take ( fibs ) (8) )
 
 //    println(Stream.toList(Stream.take(constante("x"))(5)))
 // var simplifies chaining of functions a bit..
