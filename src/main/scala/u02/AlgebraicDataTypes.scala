@@ -1,5 +1,7 @@
 package u02
 
+import scala.compiletime.ops.string
+
 object AlgebraicDataTypes extends App :
 
   enum Person: // a sum type defined by enumerating various cases
