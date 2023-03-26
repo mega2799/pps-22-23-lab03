@@ -1,5 +1,10 @@
 package u03
 
+import math.Fractional.Implicits.infixFractionalOps
+  import math.Integral.Implicits.infixIntegralOps
+  import math.Numeric.Implicits.infixNumericOps
+import u03.Streams.Stream.{constante, fibs}
+
 object Streams extends App :
 
   import Lists.*
@@ -34,17 +39,41 @@ object Streams extends App :
       case (Cons(head, tail), n) if n > 0 => cons(head(), take(tail())(n - 1))
       case _ => Empty()
 
+    def drop[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
+      case (Cons(head, tail), n) if n > 0 => drop(tail())(n - 1)
+      case (Cons(head, tail), n)  => cons(head(), tail())
+      case _ => Empty()
+
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
 
+    def constante[A](k: A): Stream[A] = (k) match
+      case _ => Stream.cons(k, constante(k))
+
+
+    def fibs: Stream[Int] =
+      val fib = Stream.cons(0, Stream.cons(1, Empty()))
+      fib match
+//        case (Cons(head, tail)) => Stream.cons(head(), Stream.map(tail())((t) => t + head()))
+        case (Cons(head, tail)) => Stream.cons(head(), Stream.map(tail())((t) => t + head()))
+
+      // Stream.map(Stream.take(Stream.iterate(0)(_ + 1))(2))(_ * 2)
   end Stream
 
-  // var simplifies chaining of functions a bit..
-  var str = Stream.iterate(0)(_ + 1) // {0,1,2,3,..}
-  str = Stream.map(str)(_ + 1) // {1,2,3,4,..}
-  str = Stream.filter(str)(x => (x < 3 || x > 20)) // {1,2,21,22,..}
-  str = Stream.take(str)(10) // {1,2,21,22,..,28}
-  println(Stream.toList(str)) // [1,2,21,22,..,28]
+    println(Stream . toList ( Stream . take ( fibs ) (8) ))
 
-  val corec: Stream[Int] = Stream.cons(1, corec) // {1,1,1,..}
-  println(Stream.toList(Stream.take(corec)(10))) // [1,1,..,1]
+//    println(Stream.toList(Stream.take(constante("x"))(5)))
+// var simplifies chaining of functions a bit..
+//  var str = Stream.iterate(0)(_ + 1) // {0,1,2,3,..}
+//  str = Stream.map(str)(_ + 1) // {1,2,3,4,..}
+//  str = Stream.filter(str)(x => (x < 3 || x > 20)) // {1,2,21,22,..}
+//  str = Stream.take(str)(10) // {1,2,21,22,..,28}
+//  println(Stream.toList(str)) // [1,2,21,22,..,28]
+//
+//  val corec: Stream[Int] = Stream.cons(1, corec) // {1,1,1,..}
+//  println(Stream.toList(Stream.take(corec)(10))) // [1,1,..,1]
+
+//  val s = Stream.take(Stream.iterate(0)(_ + 1))(10)
+//  println(Stream.toList(Stream.drop(s)(6)))
+
+
