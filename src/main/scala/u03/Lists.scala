@@ -1,5 +1,7 @@
 package u03
 
+import scala.collection.immutable.LazyList.cons
+
 object Lists extends App :
 
   // A generic linkedlist
@@ -36,6 +38,18 @@ object Lists extends App :
     def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = l match
       case Nil() => Nil()
       case Cons(h, t) => append(f(h),flatMap(t)(f))
+
+    // Write map & filter in terms of flatMap 
+
+    def mapf[A, B](l: List[A])(f: A => B): List[B] = l match
+      case Cons(h, t) => flatMap(l)((a) => Cons(f(a), Nil()))
+      case Nil() => Nil()
+
+
+    def filterFlat[A](l1: List[A])(pred: A => Boolean): List[A] = l1 match
+      case Cons(h, t) if pred(h) => flatMap(l1)((h) => Cons(h,  Nil()))
+      case Cons(_, t) => filterFlat(t)(pred)
+      case Nil() => Nil()
 
     def max(l: List[Int]): Option[Int] = l match
       case Nil() => None

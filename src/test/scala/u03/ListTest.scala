@@ -17,6 +17,7 @@ class ListTest:
     assertEquals(Cons(11, Cons(21, Cons(31, Nil()))), map(l)(_ + 1))
     assertEquals(Cons("10", Cons("20", Cons("30", Nil()))), map(l)(_ + ""))
 
+  
   @Test def testFilter() =
     assertEquals(Cons(20, Cons(30, Nil())), filter(l)(_ >= 20))
     assertEquals(Cons(10, Cons(30, Nil())), filter(l)(_ != 20))
@@ -42,6 +43,12 @@ class ListTest:
       flatMap(l)(v => Cons(v + 1, Cons(v + 2, Nil())))
     )
 
+  @Test def testMapLikeFlatMap() =
+    assertEquals(Cons(11, Cons(21, Cons(31, Nil()))), mapf(l)(_ + 1))
+
+  @Test def testFilterLikeFlatMap() =
+    assertEquals(Cons(20, Cons(30, Nil())), filterFlat(l)(_ >= 20))
+    assertEquals(Cons(10, Cons(30, Nil())), filterFlat(l)(_ != 20))
   @Test def testMax() =
     assertEquals(Some(25), max(Cons(10, Cons(25, Cons(20, Nil())))))
     assertEquals(Some(30), max(List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))))
