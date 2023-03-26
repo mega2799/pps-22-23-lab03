@@ -23,3 +23,4 @@ class Task2Test:
   @Test def foldTest() =
     assertEquals(-16, foldLeft(lst)(0)(_ - _)) // -16
     assertEquals(-8, foldRight(lst)(0)(_ - _)) // -16
+    

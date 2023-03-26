@@ -9,6 +9,8 @@ import u03.Lists.List.filter
 object Task extends App:
   //Task 1 
 
+  import Lists.*
+
     def drop[A](l: List[A], n: Int): List[A] = (l, n) match
     case (Nil(), _) => Nil()
     case (l, 0) => l
@@ -55,4 +57,3 @@ object Task extends App:
     def foldRight(l : List[Int])(start: Int)(pred: (Int, Int) => Int) : Int = (l, start) match
       case (Cons(h,t), start) if t != Nil() => pred(h, foldRight(t)(start)(pred))
       case (Cons(h,_), start) => pred(h, start)
-      

@@ -50,19 +50,17 @@ object Streams extends App :
     def constante[A](k: A): Stream[A] = (k) match
       case _ => Stream.cons(k, constante(k))
 
-
+    def fibonacci(n : Int) : Int = n match
+      case 0 => 0
+      case 1 => 1 
+      case _ => fibonacci(n-1) + fibonacci(n-2)
+     
     def fibs: Stream[Int] =
-      val fib = Stream.cons(0, Stream.cons(1, Empty()))
-      fib match
-//        case (Cons(head, tail)) => Stream.cons(head(), Stream.map(tail())((t) => t + head()))
-        case (Cons(head, tail)) => Stream.cons(head(), Stream.map(tail())((t) => t + head()))
-
-      // Stream.map(Stream.take(Stream.iterate(0)(_ + 1))(2))(_ * 2)
+      Stream.map(iterate(fibonacci(0))(_ + 1))(fibonacci(_))
+      
   end Stream
 
-    println(Stream . toList ( Stream . take ( fibs ) (8) ))
 
-//    println(Stream.toList(Stream.take(constante("x"))(5)))
 // var simplifies chaining of functions a bit..
 //  var str = Stream.iterate(0)(_ + 1) // {0,1,2,3,..}
 //  str = Stream.map(str)(_ + 1) // {1,2,3,4,..}
@@ -73,7 +71,9 @@ object Streams extends App :
 //  val corec: Stream[Int] = Stream.cons(1, corec) // {1,1,1,..}
 //  println(Stream.toList(Stream.take(corec)(10))) // [1,1,..,1]
 
-//  val s = Stream.take(Stream.iterate(0)(_ + 1))(10)
-//  println(Stream.toList(Stream.drop(s)(6)))
+    val s = Stream.take(Stream.iterate(0)(_ + 1))(10)
+    println{Stream.toList(Stream.drop(s)(6))}
+    println(Stream.toList(Stream.take(constante("x"))(5)))
+    println(Stream . toList ( Stream . take ( fibs ) (8) ))
 
 
